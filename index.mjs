@@ -7,16 +7,17 @@ const progressBar = document.getElementById("progressBar");
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 const carousel = document.getElementById("carouselExampleControls");
 
-// API key for accessing the Cat API
-const API_KEY = "live_JUzP7iAYoOWVszHKtiY2dE9lrsuGwSFMh8ZafEgZarKwt40Ku6pXOScCxacYpJ2R"; 
+// API key for accessing cat API
+const API_KEY =
+  "live_JUzP7iAYoOWVszHKtiY2dE9lrsuGwSFMh8ZafEgZarKwt40Ku6pXOScCxacYpJ2R";
 
-// Function to load breeds initially
+//Function to load
 async function initialLoad() {
   try {
-    // Fetching list of cat breeds from the Cat API
+    //Fetching list of cat brreds
     const response = await axios.get("https://api.thecatapi.com/v1/breeds");
 
-    // Populating breed select dropdown with options
+    //dropdown with options
     response.data.forEach((breed) => {
       const option = document.createElement("option");
       option.value = breed.id;
@@ -24,31 +25,31 @@ async function initialLoad() {
       breedSelect.appendChild(option);
     });
 
-    // Adding event listener for breed select dropdown change
+    //add event listener
     breedSelect.addEventListener("change", handleBreedSelection);
 
-    // Calling handleBreedSelection function to load images for the initially selected breed
+    //function to load images
     handleBreedSelection();
   } catch (error) {
     console.error("Error loading breeds:", error);
   }
 }
 
-initialLoad(); // Calling initialLoad function
+initialLoad();
 
-// Function to handle breed selection
+//breed selection
 async function handleBreedSelection() {
   try {
     const selectedBreedId = breedSelect.value;
-    // Fetching images for the selected breed from the Cat API
+    //Fetching images
     const response = await axios.get(
       `https://api.thecatapi.com/v1/images/search?limit=10&breed_ids=${selectedBreedId}`
     );
 
-    // Clearing the carousel container
+    //Clearing carousel
     carousel.innerHTML = "";
 
-    // Adding images to the carousel
+    //Adding images to carousel
     response.data.forEach((breed) => {
       const carouselElement = document.createElement("img");
       carouselElement.src = breed.url;
@@ -56,17 +57,16 @@ async function handleBreedSelection() {
       carousel.appendChild(carouselElement);
     });
 
-    // Clearing the info dump section
+    //Clearing the info dump section
     infoDump.innerHTML = "";
 
-    // Displaying additional information about the selected breed
+    //Displaying info
     displayAdditionalInfo(selectedBreedId);
   } catch (error) {
     console.error("Error fetching breed information:", error);
   }
 }
-
-// Object containing additional information data keys and corresponding labels
+//info on data keys and corresponding labels
 const additionalInfoData = {
   adaptability: "Adaptability",
   affectionLevel: "Affection Level",
@@ -80,10 +80,9 @@ const additionalInfoData = {
   wikipediaUrl: "Wikipedia URL",
 };
 
-// Function to display additional information about a breed
+//additional info about a breed
 async function displayAdditionalInfo(breedId) {
   try {
-    // Fetching additional information about the breed from the Cat API
     const response = await axios.get(
       `https://api.thecatapi.com/v1/breeds/${breedId}`
     );
@@ -92,7 +91,7 @@ async function displayAdditionalInfo(breedId) {
     const infoSection = document.createElement("div");
     infoSection.classList.add("info-section");
 
-    // Iterating over additionalInfoData object and creating paragraphs for available information
+    //creating paras for available info
     for (const key in additionalInfoData) {
       if (breedInfo[key] !== undefined) {
         const paragraph = document.createElement("p");
@@ -100,45 +99,40 @@ async function displayAdditionalInfo(breedId) {
         infoSection.appendChild(paragraph);
       }
     }
-    // Appending the info section to the info dump container
+    //Appending the info section to the info dump container
     infoDump.appendChild(infoSection);
   } catch (error) {
     console.error("Error fetching breed information:", error);
   }
 }
-
-// Function to favorite/unfavorite an image
+//Function to select img with fetch via axios
 async function favorite(imageId) {
   try {
-      // Use axios to post to the cat API's favorites endpoint with the given image ID
-      const response = await axios.post('https://api.thecatapi.com/v1/favourites', { image_id: imageId });
-      console.log('Image favorited:', response.data);
-      // Implement logic to handle the response as needed
+    const response = await axios.post(
+      "https://api.thecatapi.com/v1/favourites",
+      { image_id: imageId }
+    );
+    console.log("Image favorited:", response.data);
   } catch (error) {
-      console.error('Error favoriting image:', error);
+    console.error("Error favoriting image:", error);
   }
 }
 
-// Adding click event listener to the carousel
+//Adding event listener to carousel
 carousel.addEventListener("click", (event) => {
-  // Checking if the clicked element is a favorite icon
   if (event.target.classList.contains("favorite-icon")) {
     const imageId = event.target.dataset.imageId;
-    // Calling favorite function with the image ID
-    favorite(imageId);
   }
 });
 
-// Function to fetch and display favorite images
 async function getFavorites() {
   try {
-    // Fetching favorite images from the server
     const response = await axios.get("/favorites");
 
-    // Clearing the carousel container
+    //Clear carousel container
     carousel.innerHTML = "";
 
-    // Iterating over favorite images and adding them to the carousel
+    //Iterating over images and adding them to carousel
     response.data.forEach(async (imgId) => {
       const imageResponse = await axios.get(`/images/${imgId}`);
       const image = imageResponse.data;
@@ -160,5 +154,5 @@ async function getFavorites() {
   }
 }
 
-// Adding click event listener to the Get Favorites button
+// Adding click event listener to fa vbutton
 getFavouritesBtn.addEventListener("click", getFavorites);
