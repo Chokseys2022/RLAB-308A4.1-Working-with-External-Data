@@ -1,13 +1,13 @@
 import axios from "axios";
 
-// Getting references to HTML elements
+// Getting references -HTML elements
 const breedSelect = document.getElementById("breedSelect");
 const infoDump = document.getElementById("infoDump");
 const progressBar = document.getElementById("progressBar");
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 const carousel = document.getElementById("carouselExampleControls");
 
-// API key for accessing cat API
+// API key
 const API_KEY =
   "live_JUzP7iAYoOWVszHKtiY2dE9lrsuGwSFMh8ZafEgZarKwt40Ku6pXOScCxacYpJ2R";
 
@@ -74,10 +74,6 @@ const additionalInfoData = {
   dogFriendly: "Dog Friendly",
   energyLevel: "Energy Level",
   grooming: "Grooming",
-  intelligence: "Intelligence",
-  sheddingLevel: "Shedding Level",
-  vocalisation: "Vocalisation",
-  wikipediaUrl: "Wikipedia URL",
 };
 
 //additional info about a breed
@@ -99,7 +95,7 @@ async function displayAdditionalInfo(breedId) {
         infoSection.appendChild(paragraph);
       }
     }
-    //Appending the info section to the info dump container
+    //Appending the info section to the info container
     infoDump.appendChild(infoSection);
   } catch (error) {
     console.error("Error fetching breed information:", error);
